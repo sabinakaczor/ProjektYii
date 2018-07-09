@@ -14,6 +14,9 @@ use yii\helpers\Html;
     <td>
         <?= Html::encode("{$user->isAdmin}") ?>
     </td>
+    <td>
+        <?= Html::encode("{$user->email}") ?>
+    </td>
 </tr>
 <?php endforeach; ?>
 

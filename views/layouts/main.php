@@ -35,26 +35,30 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+    $navItems = [
+        ['label' => 'Strona domowa', 'url' => ['/site/index']],
+        ['label' => 'O stronie', 'url' => ['/site/about']],
+        ['label' => 'Kontakt', 'url' => ['/site/contact']],
+        ['label' => 'Ważne', 'url' => ['/site/links']]
+        ];
+
+        if (Yii::$app->user->isGuest) {
+            array_push($navItems, ['label' => 'Zaloguj się', 'url' => ['/site/login']], ['label' => 'Zarejestruj się', 'url' => ['/site/signup']]);
+        } else {
+            array_push($navItems, '<li>'
+            . Html::beginForm(['/site/logout'], 'post')
+            . Html::submitButton(
+                'Wyloguj się (' . Yii::$app->user->identity->username . ')',
+                ['class' => 'btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>');
+        }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Strona domowa', 'url' => ['/site/index']],
-            ['label' => 'O stronie', 'url' => ['/site/about']],
-            ['label' => 'Kontakt', 'url' => ['/site/contact']],
-            ['label' => 'Ważne', 'url' => ['/site/links']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Zaloguj się', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Wyloguj się (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+        'items' => $navItems,
     ]);
     NavBar::end();
     ?>
